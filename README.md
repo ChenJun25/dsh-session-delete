@@ -1,7 +1,7 @@
 # dsh-session-delete
 
 > DSH（DeepSeek Harness）profile 插件：给会话列表加一个真正删除会话的动作，附批量勾选删除。
-> 仓库：https://github.com/ChenJun25/dsh-session-delete · 许可证：MIT
+> 版本：**v1.1.0** · 仓库：https://github.com/ChenJun25/dsh-session-delete · 许可证：MIT
 
 给 DSH 的会话列表加一个**真正删除会话**的动作（原来只有"归档"）。
 产品本身把"没有 Session 删除"写成了设计约束（见
