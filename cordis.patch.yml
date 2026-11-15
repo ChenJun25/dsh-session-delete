@@ -1,0 +1,11 @@
+# The `dsh-session-delete` bundle patch.
+#
+# This file is what makes the package a DSH bundle: listing the package name in
+# the profile's `dsh.profile.bundles` applies this patch, and the row below is
+# the plugin itself (host half `lib/host.js`, browser half `lib/client.js`).
+#
+# Installing the package through the Plugins page (or `pnpm add` in the profile)
+# enables it as a bundle, so it survives package-manager operations.
+- insert:
+    - id: session-delete
+      name: dsh-session-delete

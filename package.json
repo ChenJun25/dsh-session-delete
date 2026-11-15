@@ -1,0 +1,53 @@
+{
+  "name": "dsh-session-delete",
+  "version": "1.1.0",
+  "description": "DSH bundle: a real \"delete session\" action in the sidebar (single + batch), backed by host-side removal of the session's stored logs.",
+  "keywords": [
+    "dsh",
+    "deepseek-harness",
+    "cordis",
+    "plugin",
+    "session",
+    "delete"
+  ],
+  "license": "MIT",
+  "type": "module",
+  "main": "lib/host.js",
+  "exports": {
+    ".": "./lib/host.js",
+    "./client": "./lib/client.js",
+    "./cordis.patch.yml": "./cordis.patch.yml",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "lib",
+    "cordis.patch.yml",
+    "README.md",
+    "LICENSE"
+  ],
+  "dsh": {
+    "bundle": {
+      "patch": [
+        "./cordis.patch.yml"
+      ]
+    },
+    "client": {
+      "inject": [
+        "@deepseek-ai/dsh-client-ui-workspace"
+      ],
+      "platform": "web"
+    }
+  },
+  "scripts": {
+    "test": "node test/delete-core.test.mjs && node test/client-bundle.test.mjs && node test/real-layout.test.mjs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ChenJun25/dsh-session-delete.git"
+  },
+  "homepage": "https://github.com/ChenJun25/dsh-session-delete#readme",
+  "bugs": {
+    "url": "https://github.com/ChenJun25/dsh-session-delete/issues"
+  },
+  "author": "CJ <ChenJun25@users.noreply.github.com>"
+}
