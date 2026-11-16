@@ -1,6 +1,6 @@
 {
   "name": "dsh-session-delete",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "DSH bundle: a real \"delete session\" action in the sidebar (single + batch), backed by host-side removal of the session's stored logs.",
   "keywords": [
     "dsh",
