@@ -191,4 +191,65 @@ console.log('ok 5 - registers zh/en dictionaries under its own locale namespace'
 assert.deepEqual(fetches, [['api/session.delete/ready', 'POST']]);
 console.log('ok 6 - posts the host-readiness receipt through the document-relative route');
 
+const listState = {
+  ids: ['w1-a', 'w1-b', 'w2-a', 'loose', 'blank-1'],
+  byId: {
+    'w1-a': { id: 'w1-a', blank: false },
+    'w1-b': { id: 'w1-b', blank: false },
+    'w2-a': { id: 'w2-a', blank: false },
+    loose: { id: 'loose', blank: false },
+    'blank-1': { id: 'blank-1', blank: true },
+  },
+};
+const workspaceState = {
+  items: [
+    { workspaceId: 'ws1', sessionIds: ['w1-a', 'w1-b'] },
+    { workspaceId: 'ws2', sessionIds: ['w2-a'] },
+  ],
+};
+const scopedRegistrations = [];
+const scopedCtx = {
+  effect: (callback) => {
+    callback();
+    return () => {};
+  },
+  locale: { register: () => () => {} },
+  slots: {
+    inject: (key, callback) => {
+      callback();
+      return () => {};
+    },
+    register: (options, component) => {
+      scopedRegistrations.push({ options, component });
+      return () => {};
+    },
+  },
+  get: (name) => {
+    if (name === 'sessions') return { list: { getSnapshot: () => listState }, refresh: async () => {} };
+    if (name === 'workspaces') return { list: { getSnapshot: () => workspaceState } };
+    return undefined;
+  },
+};
+
+client.apply(scopedCtx);
+assert.equal(scopedRegistrations.length, 5);
+const [, scopedBatchMenu, , , scopedOverlay] = scopedRegistrations;
+const scopedMenuFace = scopedBatchMenu.options.inject();
+const scopedOverlayFace = scopedOverlay.options.inject();
+
+scopedMenuFace.enterBatchDelete('w1-b');
+assert.deepEqual(
+  scopedOverlayFace.allSessionIds().sort(),
+  ['w1-a', 'w1-b'],
+  'select-all covers only the owning Workspace, never another Workspace and never the blank row',
+);
+
+scopedMenuFace.enterBatchDelete('loose');
+assert.deepEqual(
+  scopedOverlayFace.allSessionIds(),
+  ['loose'],
+  'a row outside every Workspace scopes select-all to the ungrouped bucket only',
+);
+console.log('ok 7 - select-all is scoped to the Workspace that opened batch mode');
+
 console.log('\nall client-bundle checks passed');
